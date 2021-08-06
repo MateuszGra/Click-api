@@ -1,4 +1,5 @@
 import { MessageBodyEntity } from '../entities/message-body.entity';
+import { MessageMetaEntity } from '../entities/message-meta.entity';
 
 export interface MessageMeta {
   id: string;
@@ -8,3 +9,16 @@ export interface MessageMeta {
   sender: string;
   messageBody: MessageBodyEntity;
 }
+
+export type MessageResp =
+  | {
+      success: true;
+      items?: MessageMetaEntity[];
+      count?: number;
+      pagesCount?: number;
+      id?: string;
+    }
+  | {
+      success: false;
+      errors: string[];
+    };
