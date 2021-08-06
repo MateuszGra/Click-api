@@ -11,13 +11,13 @@ export class MessagesController {
     return await this.messagesService.getAll(page);
   }
 
-  @Get('/one/:id')
-  async getOneById(@Param('id') id: string): Promise<MessageResp> {
+  @Get('/get-one')
+  async getOneById(@Query('id') id: string): Promise<MessageResp> {
     return await this.messagesService.getOneById(id);
   }
 
-  @Post('/:count')
-  async addNew(@Param('count') count: number): Promise<MessageResp> {
+  @Post('/generate')
+  async addNew(@Query('count') count: number): Promise<MessageResp> {
     return await this.messagesService.addNew(count);
   }
 }
