@@ -14,6 +14,5 @@ export class MessageBodyEntity extends BaseEntity implements MessageBody {
   content: string;
 
   @OneToOne((type) => MessageMetaEntity, (entity) => entity.messageBody)
-  @JoinColumn()
   messageMeta: MessageMetaEntity;
 }
