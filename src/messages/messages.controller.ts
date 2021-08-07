@@ -1,14 +1,19 @@
 import { Controller, Get, Post, Inject, Param, Query } from '@nestjs/common';
 import { MessagesService } from './messages.service';
-import { MessageResp } from '../interfaces/message-meta';
+import { MessageFilters, MessageOrder, MessageResp } from '../interfaces/message-meta';
 
 @Controller('messages')
 export class MessagesController {
   constructor(@Inject(MessagesService) private messagesService: MessagesService) {}
 
   @Get('/')
-  async getAll(@Query('page') page: number): Promise<MessageResp> {
-    return await this.messagesService.getAll(page);
+  async getAll(
+    @Query('page') page: number,
+    @Query('filter') filter: MessageFilters,
+    @Query('order') order: MessageOrder,
+    @Query('search') search: string,
+  ): Promise<MessageResp> {
+    return await this.messagesService.getAll(page, filter, order, search);
   }
 
   @Get('/get-one')

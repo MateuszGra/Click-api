@@ -1,16 +1,47 @@
 import { Injectable } from '@nestjs/common';
 import { MessageMetaEntity } from '../entities/message-meta.entity';
-import { MessageResp } from '../interfaces/message-meta';
+import { MessageFilters, MessageOrder, MessageResp } from '../interfaces/message-meta';
 import { MessageBodyEntity } from '../entities/message-body.entity';
+import { Like } from 'typeorm';
 
 @Injectable()
 export class MessagesService {
-  async getAll(page = 1): Promise<MessageResp> {
+  async getAll(
+    page = 1,
+    filter: MessageFilters = MessageFilters.date,
+    order: MessageOrder = MessageOrder.asc,
+    search: string,
+  ): Promise<MessageResp> {
     try {
       const maxPerPage = 10;
+      const orders = {};
+      orders[filter] = order.toUpperCase();
+
+      if (search) {
+        const [items, count]: [MessageMetaEntity[], number] = await MessageMetaEntity.findAndCount({
+          skip: maxPerPage * (page - 1),
+          take: maxPerPage,
+          order: orders,
+          where: [
+            { name: Like(`%${search}%`), sender: Like(`%${search}%`) },
+            { name: Like(`%${search}%`) },
+            { sender: Like(`%${search}%`) },
+          ],
+        });
+        const pagesCount = Math.ceil(count / maxPerPage);
+
+        return {
+          success: true,
+          count: count,
+          pagesCount: pagesCount,
+          items: items,
+        };
+      }
+
       const [items, count]: [MessageMetaEntity[], number] = await MessageMetaEntity.findAndCount({
         skip: maxPerPage * (page - 1),
         take: maxPerPage,
+        order: orders,
       });
       const pagesCount = Math.ceil(count / maxPerPage);
 

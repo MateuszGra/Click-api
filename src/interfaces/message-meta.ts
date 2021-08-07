@@ -22,3 +22,14 @@ export type MessageResp =
       success: false;
       errors: string[];
     };
+
+export enum MessageFilters {
+  date = 'date',
+  name = 'name',
+  sender = 'sender',
+}
+
+export enum MessageOrder {
+  asc = 'ASC',
+  desc = 'DESC',
+}
