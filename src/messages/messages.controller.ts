@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Inject, Param, Query } from '@nestjs/common';
+import { Controller, Get, Post, Inject, Param, Query, Delete } from '@nestjs/common';
 import { MessagesService } from './messages.service';
 import { MessageFilters, MessageOrder, MessageResp } from '../interfaces/message-meta';
 
@@ -24,5 +24,10 @@ export class MessagesController {
   @Post('/generate')
   async addNew(@Query('count') count: number): Promise<MessageResp> {
     return await this.messagesService.addNew(count);
+  }
+
+  @Delete('/delete')
+  async delete(@Query('id') id: string): Promise<MessageResp> {
+    return await this.messagesService.delete(id);
   }
 }

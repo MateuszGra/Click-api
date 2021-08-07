@@ -106,4 +106,21 @@ export class MessagesService {
       success: true,
     };
   }
+
+  async delete(id: string): Promise<MessageResp> {
+    try {
+      const deleteItem = await MessageMetaEntity.delete(id);
+      if (!deleteItem) {
+        throw new Error(`Message not found`);
+      }
+      return {
+        success: true,
+      };
+    } catch (e) {
+      return {
+        success: false,
+        errors: [e.message],
+      };
+    }
+  }
 }
