@@ -61,7 +61,9 @@ export class MessagesService {
 
   async getOneById(id: string): Promise<MessageResp> {
     try {
-      const message: MessageMetaEntity = await MessageMetaEntity.findOne(id);
+      const message: MessageMetaEntity = await MessageMetaEntity.findOne(id, {
+        relations: ['messageBody'],
+      });
       if (!message) throw new Error(`Message not found`);
       return {
         success: true,
